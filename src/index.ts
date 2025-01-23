@@ -8,7 +8,7 @@ const PORT = process.env.PORT
 
 app.use(express.json())
 
-app.use('/users', userRoute)
+app.use('/api/user', userRoute)
 
 
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`))
