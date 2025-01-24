@@ -5,6 +5,8 @@ const prisma = new PrismaClient()
 import argon2, { hash } from 'argon2'
 import { IRegisterUser } from "../types/user";
 
+import {validationResult} from 'express-validator'
+
 
 interface ICreateUserPayload {
     username: string
@@ -16,21 +18,6 @@ export const registerUser = async (req : Request, res : Response) => {
     try {
             
     const data: IRegisterUser = req.body 
-        // Check the validation 
-        if(!data.password ||
-            !data.confirmPassword ||
-            !data.email ||
-            !data.fullname ||
-            !data.phone_number
-        ) {
-            res.status(404).json({
-                isSuccess: false,
-                message: "Validation error."
-            })
-
-            return
-        }
-
 
         // Check the password
         if(data.password !== data.confirmPassword) {
@@ -85,4 +72,22 @@ export const registerUser = async (req : Request, res : Response) => {
             message: defaultErrorMessage
         })
     }
+}
+
+export const loginUser = async (req : Request, res : Response) => {
+
+    const errors = validationResult(req)
+
+    if(!errors.isEmpty()){
+        res.status(400).json({
+            isSuccess: false,
+            errors: errors.array()  
+        })
+
+        return
+    }
+
+    res.status(200).json({
+        isSuccess: true
+    })
 }
