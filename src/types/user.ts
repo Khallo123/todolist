@@ -5,3 +5,8 @@ export interface IRegisterUser {
     fullname: string
     confirmPassword: string
 }
+
+export interface ILoginUser {
+    email: string
+    password: string
+}
